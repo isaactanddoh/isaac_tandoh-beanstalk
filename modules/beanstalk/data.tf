@@ -2,8 +2,7 @@
 data "aws_availability_zones" "azs" {}
 
 # Data source for AWS ACM certificate
-data "aws_acm_certificate" "domain_cert" {
-  domain   = var.domain
+data "aws_acm_certificate_arn" "domain_cert" {
   arn = var.certificate_arn
   statuses = ["ISSUED"]
 }
