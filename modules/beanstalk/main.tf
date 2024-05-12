@@ -1,25 +1,3 @@
-# IAM Role
-resource "aws_iam_role" "iam_role" {
-  name = "${local.name}-IAMRole"
-
-  assume_role_policy = file("${path.module}/templates/role.json")
-}
-
-# IAM Instance Profile
-resource "aws_iam_instance_profile" "instance_profile" {
-  name = "${local.name}-instance-profile"
-
-  role = aws_iam_role.iam_role.name
-}
-
-
-# Attach policies to IAM Role
-resource "aws_iam_role_policy_attachment" "my_attachment" {
-  role       = aws_iam_role.iam_role.name
-  policy_arn = "arn:aws:iam::aws:policy/AWSElasticBeanstalkWebTier"
-
-}
-
 # Elastic Beanstalk application
 resource "aws_elastic_beanstalk_application" "app" {
   name = "${local.name}-DotNetApp"
@@ -67,7 +45,7 @@ resource "aws_elastic_beanstalk_environment" "app-environment" {
   # Instance profile configuration
   setting {
     namespace = "aws:autoscaling:launchconfiguration"
-    name      = "${local.name}-IamInstanceProfile"
+    name      = "${local.name}-asg"
     value     = aws_iam_instance_profile.instance_profile.name
   }
 
@@ -89,4 +67,26 @@ resource "aws_elastic_beanstalk_environment" "app-environment" {
     name      = "ProtocolHttps"
     value     = "true"
   }
+}
+
+# IAM Role
+resource "aws_iam_role" "iam_role" {
+  name = "${local.name}-IAMRole"
+
+  assume_role_policy = file("${path.module}/templates/role.json")
+}
+
+# IAM Instance Profile
+resource "aws_iam_instance_profile" "instance_profile" {
+  name = "${local.name}-instance-profile"
+
+  role = aws_iam_role.iam_role.name
+}
+
+
+# Attach policies to IAM Role
+resource "aws_iam_role_policy_attachment" "my_attachment" {
+  role       = aws_iam_role.iam_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AWSElasticBeanstalkWebTier"
+
 }
