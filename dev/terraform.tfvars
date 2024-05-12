@@ -14,4 +14,4 @@ public_subnet_cidr = "10.1.1.0/24"
 private_subnet_cidr = "10.1.2.0/24"
 
 # Configure Domain Cert
-domain = "www.isaacdevops.xyz"
+domain = "dev.isaacdevops.xyz"
