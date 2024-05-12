@@ -12,3 +12,6 @@ public_subnet_cidr="10.1.1.0/24"
 
 # Configure Private Subnet CIDR
 private_subnet_cidr="10.1.2.0/24"
+
+# Configure Domain Cert
+domain="*.devopsike.xyz"
