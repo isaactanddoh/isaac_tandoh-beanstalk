@@ -14,7 +14,4 @@ public_subnet_cidr = "10.1.1.0/24"
 private_subnet_cidr = "10.1.2.0/24"
 
 # Configure Domain Cert
-domain = "*.devopsike.xyz"
-
-# Configure Certificate ARN
-certificate_arn = "arn:aws:acm:us-east-1:339712972136:certificate/dc644388-3200-44d3-aa03-4156371366f9"
+domain = "www.isaacdevops.xyz"

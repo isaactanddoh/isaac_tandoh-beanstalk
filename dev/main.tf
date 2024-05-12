@@ -13,6 +13,5 @@ module "beanstalk_env" {
   env = var.env
   project = var.project
   domain = var.domain
-  certificate_arn = var.certificate_arn
   depends_on = [module.vpc]
 }

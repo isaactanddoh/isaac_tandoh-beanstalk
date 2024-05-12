@@ -14,7 +14,7 @@ data "aws_ssm_parameter" "vpc_id" {
 
 # Select Private subnets
 data "aws_ssm_parameter" "private_subnet" {
-    name = "${local.ssm_vpc}/private_subnet_id"
+    name = "${local.ssm_subnet_ids}/private_subnet_id"
 }
 
 # Select Public subnets
