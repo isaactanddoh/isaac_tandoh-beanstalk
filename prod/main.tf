@@ -1,5 +1,5 @@
 module "vpc" {
-    source = "../modules/01-vpc"
+    source = "../modules/vpc"
     vpc_cidr = var.vpc_cidr
     project = var.project
     public_subnet_cidr = var.public_subnet_cidr
@@ -9,6 +9,6 @@ module "vpc" {
 
 # Beanstalk Environment
 module "beanstalk_env" {
-  source = "../modules/02-beanstalk"
+  source = "../modules/beanstalk"
   depends_on = [ module.vpc ]
 }
