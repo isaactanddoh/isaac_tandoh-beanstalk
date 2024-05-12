@@ -2,22 +2,22 @@
 data "aws_availability_zones" "azs" {}
 
 # Data source for AWS ACM certificate
-data "aws_acm_certificate_arn" "domain_cert" {
-  arn = var.certificate_arn
-  statuses = ["ISSUED"]
+data "aws_acm_certificate" "domain_cert" {
+  domain = var.domain
+  types = ["AMAZON_ISSUED"]
 }
 
 # Select existing VPC
 data "aws_ssm_parameter" "vpc_id" {
-    name = "/isaac-beanstalk-test/vpc/vpc_id"
+    name = "${local.ssm_vpc}/vpc_id"
 }
 
 # Select Private subnets
 data "aws_ssm_parameter" "private_subnet" {
-    name = "/isaac-beanstalk-test/subnets/private_subnet_id"
+    name = "${local.ssm_vpc}/private_subnet_id"
 }
 
 # Select Public subnets
 data "aws_ssm_parameter" "public_subnet" {
-  name = "/isaac-beanstalk-test/subnets/public_subnet_id"
+  name = "${local.ssm_subnet_ids}/public_subnet_id"
 }
