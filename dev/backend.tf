@@ -1,17 +1,17 @@
 # Backend Configuration
-terraform {
-    backend "s3" {
-    bucket = "isaac-beanstalk-dev-tfstate-bucket"
-    key = "tfstate/beanstalk-dev.tfstate"
-    region = "us-east-1"
-    }
-}
+# terraform {
+#     backend "s3" {
+#     bucket = "isaac-beanstalk-dev-tfstate-bucket"
+#     key = "tfstate/beanstalk/dev.tfstate"
+#     region = "us-east-1"
+#     }
+# }
 
 # Provider Configuration
 terraform {
   required_providers {
     aws = {
-      source  = "hashicorp/aws"
+      source = "hashicorp/aws"
     }
   }
 }

@@ -12,3 +12,6 @@ public_subnet_cidr="172.16.0.0/24"
 
 # Configure Private Subnet CIDR
 private_subnet_cidr="172.16.1.0/24"
+
+# Configure Domain Cert
+domain="isaacdevops.xyz"
