@@ -25,7 +25,7 @@ resource "aws_elastic_beanstalk_environment" "app-environment" {
 
   setting {
     namespace = "aws:ec2:vpc"
-    name      = "ELBSubnet"
+    name      = "ELBSubnets"
     value     = data.aws_ssm_parameter.public_subnet.value
   }
 
