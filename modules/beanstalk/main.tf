@@ -13,26 +13,26 @@ resource "aws_elastic_beanstalk_environment" "app-environment" {
   # VPC configuration
   setting {
     namespace = "aws:ec2:vpc"
-    name      = "${local.name}-VPCId"
+    name      = "VPCId"
     value     = data.aws_ssm_parameter.vpc_id.value
   }
 
   setting {
     namespace = "aws:ec2:vpc"
-    name      = "${local.name}-Subnets"
+    name      = "Subnets"
     value     = join(",", [data.aws_ssm_parameter.public_subnet.value, data.aws_ssm_parameter.private_subnet.value])
   }
 
   setting {
     namespace = "aws:ec2:vpc"
-    name      = "${local.name}-ELBSubnet"
+    name      = "ELBSubnet"
     value     = data.aws_ssm_parameter.public_subnet.value
   }
 
   # Load balancer configuration
   setting {
     namespace = "aws:elbv2:listener:443"
-    name      = "${local.name}-listener"
+    name      = "DefaultProcess"
     value     = "default"
   }
 
@@ -44,6 +44,12 @@ resource "aws_elastic_beanstalk_environment" "app-environment" {
 
   # Instance type configuration
   setting {
+    namespace = "aws:autoscaling:launchconfiguration"
+    name      = "IamInstanceProfile"
+    value     = aws_iam_instance_profile.instance_profile.name
+  }
+
+    setting {
     namespace = "aws:autoscaling:launchconfiguration"
     name      = "InstanceType"
     value     = "t2.micro"
