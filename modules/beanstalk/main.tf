@@ -9,30 +9,29 @@ resource "aws_elastic_beanstalk_environment" "app-environment" {
   application         = aws_elastic_beanstalk_application.app.name
   solution_stack_name = "64bit Amazon Linux 2023 v3.0.6 running .NET 6"
   cname_prefix        = "${local.name}-dotnet-app"
-
   # VPC configuration
   setting {
     namespace = "aws:ec2:vpc"
-    name      = "${local.name}-VPCId"
+    name      = "VPCId"
     value     = data.aws_ssm_parameter.vpc_id.value
   }
 
   setting {
     namespace = "aws:ec2:vpc"
-    name      = "${local.name}-Subnets"
+    name      = "Subnets"
     value     = join(",", [data.aws_ssm_parameter.public_subnet.value, data.aws_ssm_parameter.private_subnet.value])
   }
 
   setting {
     namespace = "aws:ec2:vpc"
-    name      = "${local.name}-ELBSubnet"
+    name      = "ELBSubnets"
     value     = data.aws_ssm_parameter.public_subnet.value
   }
 
   # Load balancer configuration
   setting {
     namespace = "aws:elbv2:listener:443"
-    name      = "${local.name}-listener"
+    name      = "DefaultProcess"
     value     = "default"
   }
 
@@ -42,11 +41,17 @@ resource "aws_elastic_beanstalk_environment" "app-environment" {
     value     = data.aws_acm_certificate.domain_cert.arn
   }
 
-  # Instance profile configuration
+  # Instance type configuration
   setting {
     namespace = "aws:autoscaling:launchconfiguration"
-    name      = "${local.name}-IamInstanceProfile"
+    name      = "IamInstanceProfile"
     value     = aws_iam_instance_profile.instance_profile.name
+  }
+
+    setting {
+    namespace = "aws:autoscaling:launchconfiguration"
+    name      = "InstanceType"
+    value     = "t2.micro"
   }
 
   # HTTPS Redirection
@@ -68,7 +73,6 @@ resource "aws_elastic_beanstalk_environment" "app-environment" {
     value     = "true"
   }
 }
-
 
 # IAM Role
 resource "aws_iam_role" "iam_role" {

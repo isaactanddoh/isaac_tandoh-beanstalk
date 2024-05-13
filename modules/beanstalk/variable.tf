@@ -1,14 +1,9 @@
 
 # Declare Project Name
-variable "project" {
-  default = "beanstalk"
-}
+variable "project" {}
 
 # Declare Environment Name
-variable "env" {
-  default = "test"
-}
+variable "env" {}
 
-variable "domain" {
-  default = "*.isaacdevops.xyz"
-}
+# Declare Domain Name
+variable "domain" {}

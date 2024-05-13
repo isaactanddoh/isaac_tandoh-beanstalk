@@ -8,6 +8,9 @@ module "vpc" {
 }
 
 module "beanstalk_env" {
-  source = "../modules/beanstalk"
-  depends_on = [ module.vpc ]
+  source     = "../modules/beanstalk"
+  env = var.env
+  project = var.project
+  domain = var.domain
+  depends_on = [module.vpc]
 }
