@@ -42,11 +42,11 @@ resource "aws_elastic_beanstalk_environment" "app-environment" {
     value     = data.aws_acm_certificate.domain_cert.arn
   }
 
-  # Instance profile configuration
+  # Instance type configuration
   setting {
     namespace = "aws:autoscaling:launchconfiguration"
-    name      = "${local.name}-asg"
-    value     = aws_iam_instance_profile.instance_profile.name
+    name      = "InstanceType"
+    value     = "t2.micro"
   }
 
   # HTTPS Redirection
