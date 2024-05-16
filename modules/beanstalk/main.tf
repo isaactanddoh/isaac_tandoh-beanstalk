@@ -7,7 +7,7 @@ resource "aws_elastic_beanstalk_application" "app" {
 resource "aws_elastic_beanstalk_environment" "app-environment" {
   name                = "${local.name}-DotNetEnvironment"
   application         = aws_elastic_beanstalk_application.app.name
-  solution_stack_name = "64bit Amazon Linux 2023 v3.0.6 running .NET 6"
+  solution_stack_name = "64bit Windows Server 2022 v2.15.0 running IIS 10.0"
   cname_prefix        = "${local.name}-dotnet-app"
   # VPC configuration
   setting {
