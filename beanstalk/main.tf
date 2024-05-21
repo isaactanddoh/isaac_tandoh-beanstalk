@@ -7,7 +7,7 @@ resource "aws_elastic_beanstalk_application" "app" {
 resource "aws_elastic_beanstalk_environment" "app-environment" {
   name                = "${local.name}-DotNetEnvironment"
   application         = aws_elastic_beanstalk_application.app.name
-  solution_stack_name = ".NET 8 running on 64bit Amazon Linux 2023/3.1.1"
+  solution_stack_name = "64bit Windows Server 2022 v2.15.1 running IIS 10.0"
   cname_prefix        = "${local.name}-dotnet-app"
   # VPC configuration
   setting {
@@ -51,7 +51,7 @@ resource "aws_elastic_beanstalk_environment" "app-environment" {
     setting {
     namespace = "aws:autoscaling:launchconfiguration"
     name      = "InstanceType"
-    value     = "t2.micro"
+    value     = "t3.midium"
   }
 
   # HTTPS Redirection
