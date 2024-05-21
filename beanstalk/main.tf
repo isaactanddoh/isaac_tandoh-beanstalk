@@ -51,7 +51,7 @@ resource "aws_elastic_beanstalk_environment" "app-environment" {
     setting {
     namespace = "aws:autoscaling:launchconfiguration"
     name      = "InstanceType"
-    value     = "t3.midium"
+    value     = "t3.medium"
   }
 
   # HTTPS Redirection
