@@ -1,11 +1,11 @@
 # Backend Configuration
-terraform {
-    backend "s3" {
-    bucket = "isaac-beanstalk-prod-tfstate-bucket"
-    key = "beanstalk/prod.tfstate"
-    region = "us-east-1"
-    }
-}
+# terraform {
+#     backend "s3" {
+#     bucket = "isaac-beanstalk-tfstate-stg-bucket"
+#     key = "beanstalk/stg.tfstate"
+#     region = "us-east-1"
+#     }
+# }
 
 # Provider Configuration
 terraform {
