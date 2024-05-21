@@ -50,7 +50,7 @@ jobs:
         with:
           tf_actions_version: 0.14.3
           tf_actions_subcommand: ${{ github.event.inputs.terraform_action }}
-          tf_actions_working_dir: './dev'
+          tf_actions_working_dir: './env/dev'
           tf_actions_comment: true
           args: '--auto-approve'
       
@@ -60,6 +60,6 @@ jobs:
         with:
           tf_actions_version: 0.14.3
           tf_actions_subcommand: ${{ github.event.inputs.terraform_action }}
-          tf_actions_working_dir: './dev'
+          tf_actions_working_dir: './env/dev'
           tf_actions_comment: true
           args: '--auto-approve'
