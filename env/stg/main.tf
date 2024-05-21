@@ -1,5 +1,5 @@
 module "vpc" {
-    source = "../modules/vpc"
+    source = "../../vpc"
     vpc_cidr = var.vpc_cidr
     project = var.project
     public_subnet_cidr = var.public_subnet_cidr
@@ -8,7 +8,7 @@ module "vpc" {
 }
 
 module "beanstalk_env" {
-  source     = "../modules/beanstalk"
+  source     = "../../beanstalk"
   env = var.env
   project = var.project
   domain = var.domain
