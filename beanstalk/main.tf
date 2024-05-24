@@ -7,8 +7,9 @@ resource "aws_elastic_beanstalk_application" "app" {
 resource "aws_elastic_beanstalk_environment" "app-environment" {
   name                = "${local.name}-DotNetEnvironment"
   application         = aws_elastic_beanstalk_application.app.name
-  solution_stack_name = "64bit Windows Server Core 2019 v2.15.1 running IIS 10.0"
+  solution_stack_name = "64bit Windows Server 2019 v2.15.1 running IIS 10.0"
   cname_prefix        = "${local.name}-dotnet-app"
+
   # VPC configuration
   setting {
     namespace = "aws:ec2:vpc"
@@ -88,10 +89,8 @@ resource "aws_iam_instance_profile" "instance_profile" {
   role = aws_iam_role.iam_role.name
 }
 
-
-# Attach policies to IAM Role
-resource "aws_iam_role_policy_attachment" "my_attachment" {
-  role       = aws_iam_role.iam_role.name
-  policy_arn = "arn:aws:iam::aws:policy/AWSElasticBeanstalkWebTier"
-
-}
+# # Attach policies to IAM Role
+# resource "aws_iam_role_policy_attachment" "role-attachment" {
+#   role       = aws_iam_role.iam_role.name
+#   policy_arn = "arn:aws:iam::aws:policy/AWSElasticBeanstalkWebTier"
+# }
