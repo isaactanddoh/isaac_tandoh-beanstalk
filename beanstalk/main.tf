@@ -81,12 +81,6 @@ resource "aws_elastic_beanstalk_environment" "app-environment" {
     value = "default"
   }
 
-  setting {
-    namespace = "aws:elbv2:listener:80"
-    name = "ForwardedProtocol"
-    value = "HTTPS"
-  }
-
   # Instance type configuration
   setting {
     namespace = "aws:autoscaling:launchconfiguration"
