@@ -10,7 +10,7 @@ resource "aws_elastic_beanstalk_environment" "app-environment" {
   solution_stack_name = "64bit Windows Server 2022 v2.15.1 running IIS 10.0"
   cname_prefix        = "${local.name}-dotnet-app"
 
-  
+
   # VPC configuration
   setting {
     namespace = "aws:ec2:vpc"
@@ -20,8 +20,8 @@ resource "aws_elastic_beanstalk_environment" "app-environment" {
 
   setting {
     namespace = "aws:elasticbeanstalk:environment"
-    name = "EnvironmentType"
-    value = "LoadBalanced"
+    name      = "EnvironmentType"
+    value     = "LoadBalanced"
   }
 
   # Load balancer configuration
@@ -34,7 +34,7 @@ resource "aws_elastic_beanstalk_environment" "app-environment" {
   setting {
     namespace = "aws:ec2:vpc"
     name      = "Subnets"
-    value     = join(",", [data.aws_ssm_parameter.public_subnet1.value, data.aws_ssm_parameter.public_subnet2.value, data.aws_ssm_parameter.private_subnet1.value, data.aws_ssm_parameter.private_subnet2.value,])
+    value     = join(",", [data.aws_ssm_parameter.public_subnet1.value, data.aws_ssm_parameter.public_subnet2.value, data.aws_ssm_parameter.private_subnet1.value, data.aws_ssm_parameter.private_subnet2.value, ])
   }
 
   setting {
@@ -57,32 +57,32 @@ resource "aws_elastic_beanstalk_environment" "app-environment" {
 
   setting {
     namespace = "aws:elbv2:listener:443"
-    name = "SSLPolicy"
-    value = "ELBSecurityPolicy-2016-08"
+    name      = "SSLPolicy"
+    value     = "ELBSecurityPolicy-2016-08"
   }
 
   setting {
     namespace = "aws:elbv2:listener:80"
-    name = "ListenerEnabled"
-    value = "true"
+    name      = "ListenerEnabled"
+    value     = "true"
   }
 
   setting {
     namespace = "aws:elbv2:listener:80"
-    name = "ListenerProtocol"
-    value = "HTTP"
+    name      = "ListenerProtocol"
+    value     = "HTTP"
   }
 
   setting {
     namespace = "aws:elbv2:listener:80"
-    name = "DefaultProcess"
-    value = "default"
+    name      = "DefaultProcess"
+    value     = "default"
   }
 
   setting {
     namespace = "aws:elbv2:listener:80"
-    name = "ForwardedProtocol"
-    value = "HTTPS"
+    name      = "ForwardedProtocol"
+    value     = "HTTPS"
   }
 
   # Instance type configuration
@@ -92,7 +92,7 @@ resource "aws_elastic_beanstalk_environment" "app-environment" {
     value     = aws_iam_instance_profile.instance_profile.name
   }
 
-    setting {
+  setting {
     namespace = "aws:autoscaling:launchconfiguration"
     name      = "InstanceType"
     value     = "t2.micro"
@@ -110,7 +110,7 @@ resource "aws_elastic_beanstalk_environment" "app-environment" {
     name      = "MaxSize"
     value     = "4"
   }
-    setting {
+  setting {
     namespace = "aws:autoscaling:updatepolicy:rollingupdate"
     name      = "RollingUpdateEnabled"
     value     = "true"
@@ -122,32 +122,32 @@ resource "aws_elastic_beanstalk_environment" "app-environment" {
     value     = "Health"
   }
 
-    setting {
-    namespace = "aws:elasticbeanstalk:environment:process:default"
+  setting {
+    namespace = "aws:elasticbeanstalk:environment:healthcheck"
     name      = "HealthCheckPath"
     value     = "/"
   }
 
   setting {
-    namespace = "aws:elasticbeanstalk:environment:process:default"
+    namespace = "aws:elasticbeanstalk:environment:healthcheck"
     name      = "HealthCheckInterval"
     value     = "30"
   }
 
   setting {
-    namespace = "aws:elasticbeanstalk:environment:process:default"
+    namespace = "aws:elasticbeanstalk:environment:healthcheck"
     name      = "HealthCheckTimeout"
     value     = "5"
   }
 
   setting {
-    namespace = "aws:elasticbeanstalk:environment:process:default"
+    namespace = "aws:elasticbeanstalk:environment:healthcheck"
     name      = "HealthyThreshold"
     value     = "2"
   }
 
   setting {
-    namespace = "aws:elasticbeanstalk:environment:process:default"
+    namespace = "aws:elasticbeanstalk:environment:healthcheck"
     name      = "UnhealthyThreshold"
     value     = "5"
   }
