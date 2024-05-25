@@ -95,21 +95,21 @@ resource "aws_route_table" "private_rtb" {
   tags = {
     Name = "${local.name}-Private-RTB"
   }
-  depends_on = [ aws_nat_gateway.ngw, aws_vpc.main, aws_subnet.private ]
+  depends_on = [ aws_nat_gateway.ngw, aws_vpc.main, aws_subnet.private1, aws_subnet.private2 ]
 }
 
 # Route Table Association for the private subnet 1
 resource "aws_route_table_association" "private1" {
   subnet_id      = aws_ssm_parameter.private_subnet1_id.value
   route_table_id = aws_ssm_parameter.private_rtb_id.value
-  depends_on = [ aws_route_table.private_rtb, aws_subnet.private]
+  depends_on = [ aws_route_table.private_rtb, aws_subnet.private1]
 }
 
 # Route Table Association for the private subnet 2
 resource "aws_route_table_association" "private2" {
   subnet_id      = aws_ssm_parameter.private_subnet2_id.value
   route_table_id = aws_ssm_parameter.private_rtb_id.value
-  depends_on = [ aws_route_table.private_rtb, aws_subnet.private]
+  depends_on = [ aws_route_table.private_rtb, aws_subnet.private2]
 }
 
 # Create a Public RTB
@@ -124,21 +124,21 @@ resource "aws_route_table" "public_rtb" {
   tags = {
     Name = "${local.name}-Public-RTB"
   }
-  depends_on = [ aws_internet_gateway.igw, aws_vpc.main, aws_subnet.public ]
+  depends_on = [ aws_internet_gateway.igw, aws_vpc.main, aws_subnet.public1, aws_subnet.public2 ]
 }
 
 # Route Table Association for the public subnet 1
 resource "aws_route_table_association" "public1" {
   subnet_id      = aws_ssm_parameter.public_subnet1_id.value
   route_table_id = aws_ssm_parameter.public_rtb_id.value
-  depends_on = [ aws_route_table.public_rtb, aws_subnet.public ]
+  depends_on = [ aws_route_table.public_rtb, aws_subnet.public1 ]
 }
 
 # Route Table Association for the public subnet 2
 resource "aws_route_table_association" "public2" {
   subnet_id      = aws_ssm_parameter.public_subnet2_id.value
   route_table_id = aws_ssm_parameter.public_rtb_id.value
-  depends_on = [ aws_route_table.public_rtb, aws_subnet.public ]
+  depends_on = [ aws_route_table.public_rtb, aws_subnet.public2 ]
 }
 
 # Create an Autoscaling Security Group
