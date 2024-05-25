@@ -6,18 +6,30 @@ resource "aws_ssm_parameter" "vpc_id" {
   depends_on = [ aws_vpc.main ]
 }
 
-# SSM parameter for public subnet ID
-resource "aws_ssm_parameter" "public_subnet_id" {
-  name  = "${local.ssm_subnet_ids}/public_subnet_id"
+# SSM parameter for public subnets ID
+resource "aws_ssm_parameter" "public_subnet1_id" {
+  name  = "${local.ssm_subnet_ids}/public_subnet1_id"
   type  = "String"
-  value = aws_subnet.public.id
+  value = aws_subnet.public1.id
 }
 
-# SSM parameter for private subnet ID
-resource "aws_ssm_parameter" "private_subnet_id" {
-  name  = "${local.ssm_subnet_ids}/private_subnet_id"
+resource "aws_ssm_parameter" "public_subnet2_id" {
+  name  = "${local.ssm_subnet_ids}/public_subnet2_id"
   type  = "String"
-  value = aws_subnet.private.id
+  value = aws_subnet.public2.id
+}
+
+# SSM parameter for private subnets ID
+resource "aws_ssm_parameter" "private_subnet1_id" {
+  name  = "${local.ssm_subnet_ids}/private_subnet1_id"
+  type  = "String"
+  value = aws_subnet.private1.id
+}
+
+resource "aws_ssm_parameter" "private_subnet2_id" {
+  name  = "${local.ssm_subnet_ids}/private_subnet2_id"
+  type  = "String"
+  value = aws_subnet.private2.id
 }
 
 # SSM parameter for NAT ID
