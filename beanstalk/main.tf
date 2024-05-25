@@ -20,13 +20,13 @@ resource "aws_elastic_beanstalk_environment" "app-environment" {
   setting {
     namespace = "aws:ec2:vpc"
     name      = "Subnets"
-    value     = join(",", [data.aws_ssm_parameter.public_subnet.value, data.aws_ssm_parameter.private_subnet.value])
+    value     = join(",", [data.aws_ssm_parameter.public_subnet1.value, data.aws_ssm_parameter.public_subnet2.value, data.aws_ssm_parameter.private_subnet1.value, data.aws_ssm_parameter.private_subnet2.value,])
   }
 
   setting {
     namespace = "aws:ec2:vpc"
     name      = "ELBSubnets"
-    value     = data.aws_ssm_parameter.public_subnet.value
+    value     = join(",", [data.aws_ssm_parameter.public_subnet1.value, data.aws_ssm_parameter.public_subnet2.value])
   }
 
   # Load balancer configuration
@@ -42,6 +42,12 @@ resource "aws_elastic_beanstalk_environment" "app-environment" {
     value     = data.aws_acm_certificate.domain_cert.arn
   }
 
+  setting {
+    namespace = "aws:elasticbeanstalk:environment"
+    name      = "LoadBalancerType"
+    value     = "application"
+  }
+
   # Instance type configuration
   setting {
     namespace = "aws:autoscaling:launchconfiguration"
@@ -52,7 +58,26 @@ resource "aws_elastic_beanstalk_environment" "app-environment" {
     setting {
     namespace = "aws:autoscaling:launchconfiguration"
     name      = "InstanceType"
-    value     = "t3.medium"
+    value     = "t2.micro"
+  }
+
+  # Autoscaling configuration
+  setting {
+    namespace = "aws:autoscaling:asg"
+    name      = "MinSize"
+    value     = "2"
+  }
+
+  setting {
+    namespace = "aws:autoscaling:asg"
+    name      = "MaxSize"
+    value     = "4"
+  }
+
+  setting {
+    namespace = "aws:autoscaling:asg"
+    name      = "DesiredCapacity"
+    value     = "2"
   }
 
   # HTTPS Redirection
@@ -89,8 +114,8 @@ resource "aws_iam_instance_profile" "instance_profile" {
   role = aws_iam_role.iam_role.name
 }
 
-# # Attach policies to IAM Role
-# resource "aws_iam_role_policy_attachment" "role-attachment" {
-#   role       = aws_iam_role.iam_role.name
-#   policy_arn = "arn:aws:iam::aws:policy/AWSElasticBeanstalkWebTier"
-# }
+# Attach policies to IAM Role
+resource "aws_iam_role_policy_attachment" "role-attachment" {
+  role       = aws_iam_role.iam_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AWSElasticBeanstalkWebTier"
+}
