@@ -74,12 +74,6 @@ resource "aws_elastic_beanstalk_environment" "app-environment" {
     value     = "4"
   }
 
-  setting {
-    namespace = "aws:autoscaling:asg"
-    name      = "DesiredCapacity"
-    value     = "2"
-  }
-
   # HTTPS Redirection
   setting {
     namespace = "aws:elbv2:listener:443"
