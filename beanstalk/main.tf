@@ -31,6 +31,8 @@ resource "aws_elastic_beanstalk_environment" "app-environment" {
     value     = "application"
   }
 
+
+
   setting {
     namespace = "aws:ec2:vpc"
     name      = "Subnets"
@@ -69,7 +71,7 @@ resource "aws_elastic_beanstalk_environment" "app-environment" {
 
   setting {
     namespace = "aws:elbv2:listener:80"
-    name = "ListenerProtocol"
+    name = "ListenerProtocol:80"
     value = "HTTP"
   }
 
