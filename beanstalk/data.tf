@@ -13,11 +13,19 @@ data "aws_ssm_parameter" "vpc_id" {
 }
 
 # Select Private subnets
-data "aws_ssm_parameter" "private_subnet" {
-    name = "${local.ssm_subnet_ids}/private_subnet_id"
+data "aws_ssm_parameter" "private_subnet1" {
+    name = "${local.ssm_subnet_ids}/private_subnet1_id"
+}
+
+data "aws_ssm_parameter" "private_subnet2" {
+    name = "${local.ssm_subnet_ids}/private_subnet2_id"
 }
 
 # Select Public subnets
-data "aws_ssm_parameter" "public_subnet" {
-  name = "${local.ssm_subnet_ids}/public_subnet_id"
+data "aws_ssm_parameter" "public_subnet1" {
+  name = "${local.ssm_subnet_ids}/public_subnet1_id"
+}
+
+data "aws_ssm_parameter" "public_subnet2" {
+  name = "${local.ssm_subnet_ids}/public_subnet2_id"
 }
