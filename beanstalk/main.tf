@@ -10,11 +10,25 @@ resource "aws_elastic_beanstalk_environment" "app-environment" {
   solution_stack_name = "64bit Windows Server 2022 v2.15.1 running IIS 10.0"
   cname_prefix        = "${local.name}-dotnet-app"
 
+  
   # VPC configuration
   setting {
     namespace = "aws:ec2:vpc"
     name      = "VPCId"
     value     = data.aws_ssm_parameter.vpc_id.value
+  }
+
+  setting {
+    namespace = "aws:elasticbeanstalk:environment"
+    name = "EnvironmentType"
+    value = "LoadBalanced"
+  }
+
+  # Load balancer configuration
+  setting {
+    namespace = "aws:elasticbeanstalk:environment"
+    name      = "LoadBalancerType"
+    value     = "application"
   }
 
   setting {
@@ -29,11 +43,10 @@ resource "aws_elastic_beanstalk_environment" "app-environment" {
     value     = join(",", [data.aws_ssm_parameter.public_subnet1.value, data.aws_ssm_parameter.public_subnet2.value])
   }
 
-  # Load balancer configuration
   setting {
-    namespace = "aws:elbv2:listener:443"
-    name      = "DefaultProcess"
-    value     = "default"
+    namespace = "aws:elbv2:loadbalancer"
+    name      = "ListenerProtocol:443"
+    value     = "HTTPS"
   }
 
   setting {
@@ -43,9 +56,33 @@ resource "aws_elastic_beanstalk_environment" "app-environment" {
   }
 
   setting {
-    namespace = "aws:elasticbeanstalk:environment"
-    name      = "LoadBalancerType"
-    value     = "application"
+    namespace = "aws:elbv2:listener:443"
+    name = "SSLPolicy"
+    value = "ELBSecurityPolicy-2016-08"
+  }
+
+  setting {
+    namespace = "aws:elbv2:listener:80"
+    name = "ListenerEnabled"
+    value = "true"
+  }
+
+  setting {
+    namespace = "aws:elbv2:listener:80"
+    name = "ListenerProtocol"
+    value = "HTTP"
+  }
+
+  setting {
+    namespace = "aws:elbv2:listener:80"
+    name = "DefaultProcess"
+    value = "default"
+  }
+
+  setting {
+    namespace = "aws:elbv2:listener:80"
+    name = "ForwardedProtocol"
+    value = "HTTPS"
   }
 
   # Instance type configuration
@@ -73,24 +110,46 @@ resource "aws_elastic_beanstalk_environment" "app-environment" {
     name      = "MaxSize"
     value     = "4"
   }
-
-  # HTTPS Redirection
-  setting {
-    namespace = "aws:elbv2:listener:443"
-    name      = "ListenerEnabled"
+    setting {
+    namespace = "aws:autoscaling:updatepolicy:rollingupdate"
+    name      = "RollingUpdateEnabled"
     value     = "true"
   }
 
   setting {
-    namespace = "aws:elbv2:listener:443"
-    name      = "Protocol"
-    value     = "HTTPS"
+    namespace = "aws:autoscaling:updatepolicy:rollingupdate"
+    name      = "RollingUpdateType"
+    value     = "Health"
+  }
+
+    setting {
+    namespace = "aws:elasticbeanstalk:environment:process:default"
+    name      = "HealthCheckPath"
+    value     = "/"
   }
 
   setting {
-    namespace = "aws:elbv2:listener:443"
-    name      = "ProtocolHttps"
-    value     = "true"
+    namespace = "aws:elasticbeanstalk:environment:process:default"
+    name      = "HealthCheckInterval"
+    value     = "30"
+  }
+
+  setting {
+    namespace = "aws:elasticbeanstalk:environment:process:default"
+    name      = "HealthCheckTimeout"
+    value     = "5"
+  }
+
+  setting {
+    namespace = "aws:elasticbeanstalk:environment:process:default"
+    name      = "HealthyThreshold"
+    value     = "2"
+  }
+
+  setting {
+    namespace = "aws:elasticbeanstalk:environment:process:default"
+    name      = "UnhealthyThreshold"
+    value     = "5"
   }
 }
 
