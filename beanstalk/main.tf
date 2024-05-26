@@ -1,17 +1,16 @@
-# Elastic Beanstalk application
+# Elastic Beanstalk Application
 resource "aws_elastic_beanstalk_application" "app" {
   name = "${local.name}-DotNetApp"
 }
 
-# Elastic Beanstalk environment
+# Elastic Beanstalk Environment
 resource "aws_elastic_beanstalk_environment" "app-environment" {
   name                = "${local.name}-DotNetEnvironment"
   application         = aws_elastic_beanstalk_application.app.name
-  solution_stack_name = "64bit Windows Server 2022 v2.15.1 running IIS 10.0"
+  solution_stack_name = "64bit Amazon Linux 2023 v3.1.1 running .NET 8"
   cname_prefix        = "${local.name}-dotnet-app"
 
-  
-  # VPC configuration
+  # VPC Configuration
   setting {
     namespace = "aws:ec2:vpc"
     name      = "VPCId"
@@ -19,24 +18,34 @@ resource "aws_elastic_beanstalk_environment" "app-environment" {
   }
 
   setting {
-    namespace = "aws:elasticbeanstalk:environment"
-    name = "EnvironmentType"
-    value = "LoadBalanced"
+    namespace = "aws:ec2:vpc"
+    name      = "AssociatePublicIpAddress"
+    value     = "True"
   }
 
-  # Load balancer configuration
+  setting {
+    namespace = "aws:elasticbeanstalk:environment"
+    name      = "EnvironmentType"
+    value     = "LoadBalanced"
+  }
+
+  # Load Balancer Configuration
   setting {
     namespace = "aws:elasticbeanstalk:environment"
     name      = "LoadBalancerType"
     value     = "application"
   }
 
-
+  setting {
+    namespace = "aws:ec2:vpc"
+    name      = "ELBScheme"
+    value     = "internet-facing"
+  }
 
   setting {
     namespace = "aws:ec2:vpc"
     name      = "Subnets"
-    value     = join(",", [data.aws_ssm_parameter.public_subnet1.value, data.aws_ssm_parameter.public_subnet2.value, data.aws_ssm_parameter.private_subnet1.value, data.aws_ssm_parameter.private_subnet2.value,])
+    value     = join(",", [data.aws_ssm_parameter.public_subnet1.value, data.aws_ssm_parameter.public_subnet2.value, data.aws_ssm_parameter.private_subnet1.value, data.aws_ssm_parameter.private_subnet2.value])
   }
 
   setting {
@@ -45,9 +54,22 @@ resource "aws_elastic_beanstalk_environment" "app-environment" {
     value     = join(",", [data.aws_ssm_parameter.public_subnet1.value, data.aws_ssm_parameter.public_subnet2.value])
   }
 
+  # Listener Configuration
   setting {
-    namespace = "aws:elbv2:loadbalancer"
-    name      = "ListenerProtocol:443"
+    namespace = "aws:elbv2:listener:80"
+    name      = "Protocol"
+    value     = "HTTP"
+  }
+
+  setting {
+    namespace = "aws:elbv2:listener:80"
+    name      = "DefaultProcess"
+    value     = "default"
+  }
+
+  setting {
+    namespace = "aws:elbv2:listener:443"
+    name      = "Protocol"
     value     = "HTTPS"
   }
 
@@ -59,42 +81,30 @@ resource "aws_elastic_beanstalk_environment" "app-environment" {
 
   setting {
     namespace = "aws:elbv2:listener:443"
-    name = "SSLPolicy"
-    value = "ELBSecurityPolicy-2016-08"
+    name      = "SSLPolicy"
+    value     = "ELBSecurityPolicy-2016-08"
   }
 
   setting {
-    namespace = "aws:elbv2:listener:80"
-    name = "ListenerEnabled"
-    value = "true"
+    namespace = "aws:elbv2:listener:default"
+    name      = "ListenerEnabled"
+    value     = "true"
   }
 
-  setting {
-    namespace = "aws:elbv2:listener:80"
-    name = "ListenerProtocol:80"
-    value = "HTTP"
-  }
-
-  setting {
-    namespace = "aws:elbv2:listener:80"
-    name = "DefaultProcess"
-    value = "default"
-  }
-
-  # Instance type configuration
+  # Instance Type Configuration
   setting {
     namespace = "aws:autoscaling:launchconfiguration"
     name      = "IamInstanceProfile"
     value     = aws_iam_instance_profile.instance_profile.name
   }
 
-    setting {
+  setting {
     namespace = "aws:autoscaling:launchconfiguration"
     name      = "InstanceType"
     value     = "t2.micro"
   }
 
-  # Autoscaling configuration
+  # Autoscaling Configuration
   setting {
     namespace = "aws:autoscaling:asg"
     name      = "MinSize"
@@ -105,17 +115,6 @@ resource "aws_elastic_beanstalk_environment" "app-environment" {
     namespace = "aws:autoscaling:asg"
     name      = "MaxSize"
     value     = "4"
-  }
-    setting {
-    namespace = "aws:autoscaling:updatepolicy:rollingupdate"
-    name      = "RollingUpdateEnabled"
-    value     = "true"
-  }
-
-  setting {
-    namespace = "aws:autoscaling:updatepolicy:rollingupdate"
-    name      = "RollingUpdateType"
-    value     = "Health"
   }
 }
 
@@ -129,7 +128,6 @@ resource "aws_iam_role" "iam_role" {
 # IAM Instance Profile
 resource "aws_iam_instance_profile" "instance_profile" {
   name = "${local.name}-instance-profile"
-
   role = aws_iam_role.iam_role.name
 }
 
