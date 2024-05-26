@@ -21,7 +21,7 @@ permissions:
 
 jobs:
   deploy_site:
-    name: Deploy Dev
+    name: Deploy Dev Infra
     runs-on: ubuntu-latest
     defaults:
       run:
