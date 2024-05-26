@@ -33,7 +33,7 @@ jobs:
       - uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-region: us-east-1
-          role-to-assume: arn:aws:iam::730335212900:role/GithubActions
+          role-to-assume: ${{ secrets.PROD_IAM_ROLE }}
           role-session-name: github-actions
 
       - uses: hashicorp/setup-terraform@v3
