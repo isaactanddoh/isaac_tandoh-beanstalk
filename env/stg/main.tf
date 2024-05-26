@@ -1,10 +1,13 @@
 module "vpc" {
-    source = "../../vpc"
-    vpc_cidr = var.vpc_cidr
-    project = var.project
-    public_subnet_cidr = var.public_subnet_cidr
-    private_subnet_cidr = var.private_subnet_cidr
-    env = var.env
+  source                = "../../vpc"
+  vpc_cidr              = var.vpc_cidr
+  project               = var.project
+  public_subnet1_cidr   = var.public_subnet1_cidr
+  public_subnet2_cidr   = var.public_subnet2_cidr
+  private_subnet1_cidr  = var.private_subnet1_cidr
+  private_subnet2_cidr  = var.private_subnet2_cidr
+  env = var.env
+  domain = var.domain
 }
 
 module "beanstalk_env" {
