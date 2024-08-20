@@ -5,7 +5,7 @@ This project automates the deployment of an AWS Elastic Beanstalk environment al
 
 ## **Directory Structure**
 
-- **`VPC/`**:  
+- **`vpc/`**:  
   Contains the configuration files required to set up the Virtual Private Cloud (VPC). These configurations define the networking components such as subnets, route tables, and security groups.
 
 - **`env/`**:  
@@ -45,10 +45,10 @@ cd isaac_tandoh-beanstalk
 ```
 
 ### **Deploy an Environment**
-To deploy an environment (e.g., development):
+To deploy an environment (e.g., dev environment):
 ```bash
 # Navigate to the environment directory
-cd ENV/development
+cd env/dev
 
 # Initialize and apply the Terraform configuration
 terraform init
@@ -59,7 +59,7 @@ terraform apply
 To destroy an environment:
 ```bash
 # Navigate to the environment directory
-cd ENV/development
+cd env/dev
 
 # Destroy the Terraform-managed infrastructure
 terraform destroy
