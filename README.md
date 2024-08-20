@@ -11,7 +11,7 @@ This project automates the deployment of an AWS Elastic Beanstalk environment al
 - **`env/`**:  
   Houses environment-specific configurations for:
   - `dev`
-  - `stG`
+  - `stg`
   - `prod`  
   These configurations utilize the VPC and Beanstalk modules to create isolated environments tailored for each stage of deployment.
 
